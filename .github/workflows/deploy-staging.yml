@@ -1,4 +1,4 @@
-name: Stage the app
+name: Deploy to staging
 
 on:
   pull_request:
@@ -68,7 +68,7 @@ jobs:
         id: meta
         env:
           IMAGE: "${{env.IMAGE_REGISTRY_URL}}/${{ github.repository }}/\
-            ${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}"
+            ${{env.DOCKER_IMAGE_NAME}}"
         uses: docker/metadata-action@v5
         with:
           images: "${{env.IMAGE}}"
@@ -103,8 +103,8 @@ jobs:
       - name: Deploy web app container
         uses: azure/webapps-deploy@v3
         env:
-          IMAGE: ${{env.IMAGE_REGISTRY_URL}}/${{ github.repository }}/\
-            ${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
+          IMAGE: "${{env.IMAGE_REGISTRY_URL}}/${{ github.repository }}/\
+            ${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}"
         with:
           app-name: ${{env.AZURE_WEBAPP_NAME}}
           images: "${{env.IMAGE }}"
